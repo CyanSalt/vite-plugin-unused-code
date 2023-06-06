@@ -67,8 +67,7 @@ function generateUnusedExportsMessage(unusedExports: ExportsGroup[]) {
     .reduce((a, b) => a + b, 0)
   return `
 --------------------- Unused Exports ---------------------
-${numberOfUnusedExport ? `${unusedExports.map(([file, exports]) => `
-${file}
+${numberOfUnusedExport ? `${unusedExports.map(([file, exports]) => `${file}
     ⟶  ${exports.join(', ')}`).join('\n\n')}
 
 There are ${numberOfUnusedExport} unused exports. Please be careful if you want to remove them.
