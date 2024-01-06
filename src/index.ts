@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import type { Options as GlobOptions } from 'fast-glob'
-import * as fastglob from 'fast-glob'
+import fastglob from 'fast-glob'
 import micromatch from 'micromatch'
 import type { OutputBundle, Plugin, RenderedModule } from 'rollup'
 
