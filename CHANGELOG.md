@@ -1,5 +1,12 @@
 
 
+## [0.1.2](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.1...v0.1.2) (2024-01-10)
+
+
+### Bug Fixes
+
+* types for node next ([aee82b8](https://github.com/CyanSalt/vite-plugin-unused-code/commit/aee82b8217d6360517c4b5e28724fa89d6ff9db5))
+
 ### [0.1.1](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.0...v0.1.1) (2023-06-06)
 
 
