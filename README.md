@@ -7,7 +7,7 @@ Vite/Rollup plugin to detect unused files and unused exports in used files.
 This package is a ported version of [`webpack-deadcode-plugin`](https://github.com/MQuy/webpack-deadcode-plugin).
 
 > [!IMPORTANT]
-> **This plugin cannot check for dependencies of non-script files (for example: CSS), which may be misreported as unused, even if they actually appear in the compiled bundles. Please be careful!**
+> **This plugin cannot check for dependencies of non-JavaScript files or exports (for example: CSS, or types from TypeScript files), which may be misreported as unused, even if they actually appear in the compiled bundles. Please be careful!**
 
 ## Installation
 
