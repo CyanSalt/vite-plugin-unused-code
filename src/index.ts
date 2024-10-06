@@ -20,7 +20,7 @@ interface ModuleInfo {
   removedExports: RenderedModule['removedExports'],
 }
 
-function getModules(bundle: OutputBundle) {
+function getModules(bundle: OutputBundle, ignored: Map<string, true | string[]>) {
   const modules = new Map<string, ModuleInfo>()
   for (const chunk of Object.values(bundle)) {
     const renderedModules = chunk.type === 'chunk' ? chunk.modules : {}
@@ -28,14 +28,27 @@ function getModules(bundle: OutputBundle) {
       const file = cleanupFilePath(id)
       if (path.isAbsolute(file)) {
         const existing = modules.get(file)
+        const ignoredValues = ignored.get(file)
+
         // Used by bundler
-        const removedExports = data.removedExports.filter(name => name !== '__esModule')
+        const removedExports = data.removedExports.filter(
+          name => name !== '__esModule'
+          && ignoredValues !== true
+          && !ignoredValues?.includes(name)
+        )
         modules.set(file, {
           removedExports: existing ? diff(existing.removedExports, removedExports) : removedExports,
         })
       }
     }
   }
+
+  for (const [id, value] of ignored.entries()) {
+    if (value === true) {
+      modules.set(id, { removedExports: [] })
+    }
+  }
+
   return modules
 }
 
@@ -113,10 +126,27 @@ const unusedCodePlugin = (customOptions: Options): Plugin & {
     failOnHint: false,
     ...customOptions,
   }
+
+  const ignored = new Map<string, true | string[]>()
+
   return {
     enforce: 'post',
     apply: 'build',
     name: 'vite-plugin-unused-code',
+    buildStart() {
+      ignored.clear()
+    },
+    transform: {
+      order: 'pre',
+      handler(code, id) {
+        const res = /(?:\/\/|\/\*)\s?@unused-code-ignore(?<values>.+)?(?:\n|\*\/)/.exec(code)
+
+        if (res === null) return
+
+        const values = res.groups?.values?.split(/\s/).filter(Boolean)
+        ignored.set(cleanupFilePath(id), values?.length ? values : true)
+      },
+    },
     generateBundle(outputOptions, bundle) {
       const {
         context,
@@ -130,7 +160,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin & {
       } = options
 
       const globs = patterns.concat(exclude.map(pattern => `!${pattern}`))
-      const modules = getModules(bundle)
+      const modules = getModules(bundle, ignored)
       let unusedFiles: string[] = []
       let unusedExports: ExportsGroup[] = []
 
