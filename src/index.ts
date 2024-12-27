@@ -3,7 +3,8 @@ import * as path from 'path'
 import type { Options as GlobOptions } from 'fast-glob'
 import fastglob from 'fast-glob'
 import micromatch from 'micromatch'
-import type { OutputBundle, Plugin, RenderedModule } from 'rollup'
+import type { OutputBundle, RenderedModule } from 'rollup'
+import type { Plugin } from 'vite'
 
 function cleanupFilePath(id: string) {
   return id.slice(id.indexOf('?') + 1)
@@ -98,10 +99,7 @@ export interface Options {
   failOnHint?: boolean,
 }
 
-const unusedCodePlugin = (customOptions: Options): Plugin & {
-  enforce: 'post',
-  apply: 'build',
-} => {
+const unusedCodePlugin = (customOptions: Options): Plugin => {
   const options: Required<Options> = {
     context: process.cwd(),
     patterns: ['**/*.*'],
