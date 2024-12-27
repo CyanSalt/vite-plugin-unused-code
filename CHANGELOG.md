@@ -1,4 +1,10 @@
+# Changelog
 
+## [0.1.3](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.2...v0.1.3) (2024-12-27)
+
+### Bug Fixes
+
+* update deps and peer deps ([ef0168f](https://github.com/CyanSalt/vite-plugin-unused-code/commit/ef0168f64d9106377eb1c2d49fae36cbdb9d9b8f))
 
 ## [0.1.2](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.1...v0.1.2) (2024-01-10)
 
