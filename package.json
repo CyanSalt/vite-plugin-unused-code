@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-unused-code",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Vite/Rollup plugin to detect unused files and unused exports in used files",
   "type": "module",
   "main": "./dist/index.cjs",

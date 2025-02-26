@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.4](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.3...v0.1.4) (2025-02-26)
+
+### Bug Fixes
+
+* normalize path after micromatch ([34cdc2a](https://github.com/CyanSalt/vite-plugin-unused-code/commit/34cdc2a417dc4607188593cda3e104f3455c0ccd))
+
 ## [0.1.3](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.2...v0.1.3) (2024-12-27)
 
 ### Bug Fixes
