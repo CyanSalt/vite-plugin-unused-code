@@ -28,10 +28,11 @@ function getModules(bundle: OutputBundle) {
     for (const [id, data] of Object.entries(renderedModules)) {
       const file = cleanupFilePath(id)
       if (path.isAbsolute(file)) {
-        const existing = modules.get(file)
+        const key = path.normalize(file)
+        const existing = modules.get(key)
         // Used by bundler
         const removedExports = data.removedExports.filter(name => name !== '__esModule')
-        modules.set(file, {
+        modules.set(key, {
           removedExports: existing ? diff(existing.removedExports, removedExports) : removedExports,
         })
       }
@@ -45,9 +46,10 @@ function filterGlobs(files: string[], globs: string[], options?: GlobOptions) {
     const cwd = options.cwd ?? process.cwd()
     files = files.map(file => path.relative(cwd, file))
     return micromatch(files, globs, options)
-      .map(file => path.join(cwd, file))
+      .map(file => path.normalize(path.join(cwd, file)))
   }
   return micromatch(files, globs, options)
+    .map(file => path.normalize(file))
 }
 
 function generateUnusedFilesMessage(unusedFiles: string[]) {
