@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.4...v0.1.5) (2025-02-28)
+
+### Bug Fixes
+
+* cleanup file path ([daecd93](https://github.com/CyanSalt/vite-plugin-unused-code/commit/daecd93b8ef46e668152f2bc9ffa8f4632867f34))
+
 ## [0.1.4](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.3...v0.1.4) (2025-02-26)
 
 ### Bug Fixes
