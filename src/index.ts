@@ -7,7 +7,8 @@ import type { OutputBundle, RenderedModule } from 'rollup'
 import type { Plugin } from 'vite'
 
 function cleanupFilePath(id: string) {
-  return id.slice(id.indexOf('?') + 1)
+  const searchIndex = id.indexOf('?')
+  return searchIndex === -1 ? id : id.slice(0, searchIndex)
 }
 
 function diff<T>(arr1: T[], arr2: T[]) {
