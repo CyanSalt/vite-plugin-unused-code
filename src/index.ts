@@ -54,12 +54,14 @@ function filterGlobs(files: string[], globs: string[], options?: GlobOptions) {
 }
 
 function generateUnusedFilesMessage(unusedFiles: string[]) {
+  const numberOfUnusedFile = unusedFiles.length
+  const shouldUsePlural = numberOfUnusedFile > 1
   return `
 --------------------- Unused Files ---------------------
-${unusedFiles.length ? `
+${numberOfUnusedFile ? `
 ${unusedFiles.join('\n\n')}
 
-There are ${unusedFiles.length} unused files. Please be careful if you want to remove them.
+There are ${numberOfUnusedFile} unused file${shouldUsePlural ? 's' : ''}. Please be careful if you want to remove ${shouldUsePlural ? 'them' : 'it'}.
 ` : `Perfect, there is nothing to do.`}`
 }
 
@@ -69,12 +71,13 @@ function generateUnusedExportsMessage(unusedExports: ExportsGroup[]) {
   const numberOfUnusedExport = unusedExports
     .map(([file, exports]) => exports.length)
     .reduce((a, b) => a + b, 0)
+  const shouldUsePlural = numberOfUnusedExport > 1
   return `
 --------------------- Unused Exports ---------------------
 ${numberOfUnusedExport ? `${unusedExports.map(([file, exports]) => `${file}
     ⟶  ${exports.join(', ')}`).join('\n\n')}
 
-There are ${numberOfUnusedExport} unused exports. Please be careful if you want to remove them.
+There are ${numberOfUnusedExport} unused export${shouldUsePlural ? 's' : ''}. Please be careful if you want to remove ${shouldUsePlural ? 'them' : 'it'}.
 ` : `Perfect, there is nothing to do.`}`
 }
 
@@ -102,14 +105,14 @@ export interface Options {
   failOnHint?: boolean,
 }
 
+type RequiredExcept<T, U extends keyof T> = Pick<T, U> & Required<Omit<T, U>>
+
 const unusedCodePlugin = (customOptions: Options): Plugin => {
-  const options: Required<Options> = {
-    context: process.cwd(),
+  const options: RequiredExcept<Options, 'context' | 'log'> = {
     patterns: ['**/*.*'],
     exclude: [],
     detectUnusedFiles: true,
     detectUnusedExport: true,
-    log: 'all',
     exportJSON: false,
     failOnHint: false,
     ...customOptions,
@@ -118,14 +121,20 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
     enforce: 'post',
     apply: 'build',
     name: 'vite-plugin-unused-code',
+    configResolved(config) {
+      options.context ??= config.root
+      options.log ??= config.logLevel === 'silent' ? 'none' : (
+        config.logLevel === 'info' ? 'all' : 'unused'
+      )
+    },
     generateBundle(outputOptions, bundle) {
       const {
-        context,
+        context = process.cwd(),
         patterns,
         exclude,
         detectUnusedFiles,
         detectUnusedExport,
-        log,
+        log = 'all',
         exportJSON,
         failOnHint,
       } = options
