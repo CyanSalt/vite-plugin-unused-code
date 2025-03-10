@@ -35,7 +35,7 @@ export default {
 ### `context`
 
 - **Type:** `string`
-- **Default:** `process.cwd()`
+- **Default:** `root` option of Vite, `process.cwd()` as a fallback
 
   Current working directory where `patterns` and `exclude` are located.
 
@@ -72,7 +72,7 @@ export default {
 ### `log`
 
 - **Type:** `'all' | 'used' | 'none'`
-- **Default:** `'all'`
+- **Default:** `none` if `logLevel` option of Vite is `'silent'`, `'unused'` if `logLevel` option of Vite is `'error'` or `'warn'`, `'all'` otherwise
 
   Adjust console output verbosity.
 
