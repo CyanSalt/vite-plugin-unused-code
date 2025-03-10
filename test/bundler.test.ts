@@ -29,7 +29,9 @@ describe('bundler', () => {
     expect(Array.from(modules)).toEqual([
       [
         path.join(root, 'fixtures/partially-used.ts'),
-        expect.anything(),
+        expect.objectContaining({
+          removedExports: ['unusedText'],
+        }),
       ],
       [
         path.join(root, 'fixtures/used.ts'),
