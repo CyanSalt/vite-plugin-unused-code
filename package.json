@@ -19,7 +19,8 @@
   "scripts": {
     "lint": "eslint --fix './**/*.{js,ts}'",
     "prepack": "unbuild",
-    "release": "release-it"
+    "release": "release-it",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -52,7 +53,8 @@
     "rollup": "^4.29.1",
     "typescript": "^5.7.2",
     "unbuild": "^3.0.1",
-    "vite": "^6.0.6"
+    "vite": "^6.0.6",
+    "vitest": "^3.0.8"
   },
   "peerDependencies": {
     "vite": ">=2.0.0"
