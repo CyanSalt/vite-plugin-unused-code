@@ -1,57 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import type { Options as GlobOptions } from 'fast-glob'
-import fastglob from 'fast-glob'
-import micromatch from 'micromatch'
-import type { OutputBundle, RenderedModule } from 'rollup'
 import type { Plugin } from 'vite'
-
-function cleanupFilePath(id: string) {
-  const searchIndex = id.indexOf('?')
-  return searchIndex === -1 ? id : id.slice(0, searchIndex)
-}
-
-function diff<T>(arr1: T[], arr2: T[]) {
-  return [
-    ...arr1.filter(item => arr2.includes(item)),
-    ...arr2.filter(item => arr1.includes(item)),
-  ]
-}
-
-interface ModuleInfo {
-  removedExports: RenderedModule['removedExports'],
-}
-
-function getModules(bundle: OutputBundle) {
-  const modules = new Map<string, ModuleInfo>()
-  for (const chunk of Object.values(bundle)) {
-    const renderedModules = chunk.type === 'chunk' ? chunk.modules : {}
-    for (const [id, data] of Object.entries(renderedModules)) {
-      const file = cleanupFilePath(id)
-      if (path.isAbsolute(file)) {
-        const key = path.normalize(file)
-        const existing = modules.get(key)
-        // Used by bundler
-        const removedExports = data.removedExports.filter(name => name !== '__esModule')
-        modules.set(key, {
-          removedExports: existing ? diff(existing.removedExports, removedExports) : removedExports,
-        })
-      }
-    }
-  }
-  return modules
-}
-
-function filterGlobs(files: string[], globs: string[], options?: GlobOptions) {
-  if (options?.absolute) {
-    const cwd = options.cwd ?? process.cwd()
-    files = files.map(file => path.relative(cwd, file))
-    return micromatch(files, globs, options)
-      .map(file => path.normalize(path.join(cwd, file)))
-  }
-  return micromatch(files, globs, options)
-    .map(file => path.normalize(file))
-}
+import { getModules } from './bundler'
+import { filterGlobs, searchGlobs } from './glob'
 
 function generateUnusedFilesMessage(unusedFiles: string[]) {
   const numberOfUnusedFile = unusedFiles.length
@@ -145,10 +96,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
       let unusedExports: ExportsGroup[] = []
 
       if (detectUnusedFiles) {
-        const includedFiles = fastglob.sync(globs, {
-          absolute: true,
-          cwd: context,
-        })
+        const includedFiles = searchGlobs(globs, context)
         unusedFiles = includedFiles.filter(file => !modules.has(file))
         if (log === 'all' || log === 'unused' && unusedFiles.length) {
           this.warn(generateUnusedFilesMessage(unusedFiles))
@@ -156,10 +104,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
       }
 
       if (detectUnusedExport) {
-        const usedFiles = filterGlobs([...modules.keys()], globs, {
-          absolute: true,
-          cwd: context,
-        })
+        const usedFiles = filterGlobs([...modules.keys()], globs, context)
         unusedExports = usedFiles
           .filter(file => {
             return modules.get(file)!.removedExports.length
