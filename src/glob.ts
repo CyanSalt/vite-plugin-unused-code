@@ -3,10 +3,17 @@ import fastglob from 'fast-glob'
 import micromatch from 'micromatch'
 
 export function searchGlobs(globs: string[], cwd = process.cwd()) {
-  return fastglob.sync(globs, {
+  const files = fastglob.sync(globs, {
     absolute: true,
     cwd,
   })
+  /**
+   * `fast-glob` will return absolute paths in POSIX style on Windows
+   * {@link https://github.com/micromatch/micromatch?tab=readme-ov-file#backslashes}
+   */
+  return process.platform === 'win32'
+    ? files.map(file => path.normalize(file))
+    : files
 }
 
 export function filterGlobs(files: string[], globs: string[], cwd = process.cwd()) {
