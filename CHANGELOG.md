@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.5...v0.1.6) (2025-04-03)
+
+### Bug Fixes
+
+* defaults and messages ([8de3937](https://github.com/CyanSalt/vite-plugin-unused-code/commit/8de393749bffe0641efcf64cf6159030f83b0eb1))
+* fast-glob on win32 ([3783968](https://github.com/CyanSalt/vite-plugin-unused-code/commit/3783968584dd50e410f92589f0acb7ff7410152c))
+
 ## [0.1.5](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.4...v0.1.5) (2025-02-28)
 
 ### Bug Fixes
