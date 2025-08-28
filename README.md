@@ -71,13 +71,13 @@ export default {
 
 ### `log`
 
-- **Type:** `'all' | 'used' | 'none'`
+- **Type:** `'all' | 'unused' | 'none'`
 - **Default:** `none` if `logLevel` option of Vite is `'silent'`, `'unused'` if `logLevel` option of Vite is `'error'` or `'warn'`, `'all'` otherwise
 
   Adjust console output verbosity.
 
   - `'all'`: Show all messages.
-  - `'used'`: Only show messages when there are either unused files or unused export.
+  - `'unused'`: Only show messages when there are either unused files or unused export.
   - `'none'`: Won't show unused files or unused export messages in the console. It can keep terminal clean when set `exportJSON` to `true`.
 
 ### `exportJSON`
