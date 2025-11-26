@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@cyansalt/eslint-config": "^4.3.0",
-    "@cyansalt/tsconfig": "^2.2.1",
+    "@cyansalt/tsconfig": "^3.0.0",
     "@release-it/conventional-changelog": "^9.0.4",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^22.10.2",

@@ -1,13 +1,7 @@
 {
-  "extends": "@cyansalt/tsconfig/tsconfig.lib",
-  "compilerOptions": {
-    "noEmit": false,
-    "declaration": true,
-    "rootDir": "src",
-    "outDir": "dist",
-    "module": "ES2020"
-  },
-  "include": [
-    "src"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
