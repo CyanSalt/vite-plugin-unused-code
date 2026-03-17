@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import type { Plugin } from 'vite'
-import { getModules } from './bundler'
+import { cleanupFilePath, getModules } from './bundler'
 import { filterGlobs, searchGlobs } from './glob'
 
 function generateUnusedFilesMessage(unusedFiles: string[]) {
@@ -68,6 +68,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
     failOnHint: false,
     ...customOptions,
   }
+  const transformedModules = new Set<string>()
   return {
     enforce: 'post',
     apply: 'build',
@@ -77,6 +78,12 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
       options.log ??= config.logLevel === 'silent' ? 'none' : (
         config.logLevel === 'info' ? 'all' : 'unused'
       )
+    },
+    transform(_code, id) {
+      const file = cleanupFilePath(id)
+      if (path.isAbsolute(file)) {
+        transformedModules.add(path.normalize(file))
+      }
     },
     generateBundle(outputOptions, bundle) {
       const {
@@ -91,7 +98,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
       } = options
 
       const globs = patterns.concat(exclude.map(pattern => `!${pattern}`))
-      const modules = getModules(bundle)
+      const modules = getModules(bundle, transformedModules)
       let unusedFiles: string[] = []
       let unusedExports: ExportsGroup[] = []
 
