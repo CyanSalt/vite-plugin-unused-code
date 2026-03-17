@@ -34,11 +34,14 @@ export function getModules(bundle: OutputBundle, transformedModules?: Set<string
       }
     }
   }
-  // Rolldown (used by Vite 8+) doesn't populate chunk.modules.
-  // Fall back to modules tracked via the transform hook.
-  if (modules.size === 0 && transformedModules) {
+  // Rolldown (used by Vite 8+) may not fully populate chunk.modules,
+  // e.g. barrel re-exports can be missing. Merge in all modules tracked
+  // via the transform hook to ensure they are not reported as unused.
+  if (transformedModules) {
     for (const key of transformedModules) {
-      modules.set(key, { removedExports: [] })
+      if (!modules.has(key)) {
+        modules.set(key, { removedExports: [] })
+      }
     }
   }
   return modules
