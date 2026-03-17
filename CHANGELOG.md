@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.6...v0.1.7) (2026-03-17)
+
+### Bug Fixes
+
+* add Vite 8 / Rolldown compatibility ([571a7ed](https://github.com/CyanSalt/vite-plugin-unused-code/commit/571a7ede30432a4e7b8ae9a1b4e2ff893ba7a04c))
+* fallback exports ([21fda67](https://github.com/CyanSalt/vite-plugin-unused-code/commit/21fda6757f9cc7b32d3cfc73b77de64f421e1e4c))
+
 ## [0.1.6](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.5...v0.1.6) (2025-04-03)
 
 ### Bug Fixes
