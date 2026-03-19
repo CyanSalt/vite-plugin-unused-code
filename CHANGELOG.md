@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.7...v0.1.8) (2026-03-19)
+
+### Bug Fixes
+
+* always merge transformedModules into bundle modules ([0e8ff3b](https://github.com/CyanSalt/vite-plugin-unused-code/commit/0e8ff3b325bb157976f8653615685fa1b93889fd))
+* rolldown-vite compat ([96f87e0](https://github.com/CyanSalt/vite-plugin-unused-code/commit/96f87e08a00c26a57bad677d684ca86c560b01c2))
+
 ## [0.1.7](https://github.com/CyanSalt/vite-plugin-unused-code/compare/v0.1.6...v0.1.7) (2026-03-17)
 
 ### Bug Fixes
