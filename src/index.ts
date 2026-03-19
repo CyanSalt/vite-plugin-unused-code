@@ -79,7 +79,7 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
         config.logLevel === 'info' ? 'all' : 'unused'
       )
     },
-    transform(_code, id) {
+    transform(code, id) {
       const file = cleanupFilePath(id)
       if (path.isAbsolute(file)) {
         transformedModules.add(path.normalize(file))
@@ -114,10 +114,10 @@ const unusedCodePlugin = (customOptions: Options): Plugin => {
         const usedFiles = filterGlobs([...modules.keys()], globs, context)
         unusedExports = usedFiles
           .filter(file => {
-            return modules.get(file)!.removedExports.length
+            return modules.get(file)!.removedExports?.length
           })
           .map(file => {
-            return [file, modules.get(file)!.removedExports]
+            return [file, modules.get(file)!.removedExports!]
           })
         if (log === 'all' || log === 'unused' && unusedExports.length) {
           this.warn(generateUnusedExportsMessage(unusedExports))

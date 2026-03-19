@@ -1,5 +1,15 @@
 import * as path from 'path'
-import type { OutputBundle, RenderedModule } from 'rollup'
+import type { OutputBundle as RolldownOutputBundle, RenderedModule as RolldownRenderedModule } from 'rolldown'
+import type { OutputBundle as RollupOutputBundle, RenderedModule as RollupRenderedModule } from 'rollup'
+
+type OutputBundle = Record<string, RollupOutputBundle[string] | RolldownOutputBundle[string]>
+
+type RenderedModule = RollupRenderedModule | (
+  RolldownRenderedModule & Partial<Record<
+    Exclude<keyof RollupRenderedModule, keyof RolldownRenderedModule>,
+    undefined
+  >>
+)
 
 export function cleanupFilePath(id: string) {
   const searchIndex = id.indexOf('?')
@@ -13,14 +23,16 @@ function diff<T>(arr1: T[], arr2: T[]) {
   ]
 }
 
+type PropertyValue<T, K extends PropertyKey> = T extends Record<K, infer V> ? V : undefined
+
 export interface ModuleInfo {
-  removedExports: RenderedModule['removedExports'],
+  removedExports?: PropertyValue<RenderedModule, 'removedExports'>,
 }
 
 export function getModules(bundle: OutputBundle, transformedModules?: Set<string>) {
   const modules = new Map<string, ModuleInfo>()
   for (const chunk of Object.values(bundle)) {
-    const renderedModules = chunk.type === 'chunk' ? chunk.modules : {}
+    const renderedModules: Record<string, RenderedModule> = chunk.type === 'chunk' ? chunk.modules : {}
     for (const [id, data] of Object.entries(renderedModules)) {
       const file = cleanupFilePath(id)
       if (path.isAbsolute(file)) {
@@ -29,7 +41,7 @@ export function getModules(bundle: OutputBundle, transformedModules?: Set<string
         // Guard against missing removedExports (Rolldown doesn't provide it)
         const removedExports = (data.removedExports ?? []).filter(name => name !== '__esModule')
         modules.set(key, {
-          removedExports: existing ? diff(existing.removedExports, removedExports) : removedExports,
+          removedExports: existing ? diff(existing.removedExports ?? [], removedExports) : removedExports,
         })
       }
     }
@@ -40,7 +52,7 @@ export function getModules(bundle: OutputBundle, transformedModules?: Set<string
   if (transformedModules) {
     for (const key of transformedModules) {
       if (!modules.has(key)) {
-        modules.set(key, { removedExports: [] })
+        modules.set(key, {})
       }
     }
   }
