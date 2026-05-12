@@ -24,6 +24,7 @@
   ],
   "scripts": {
     "lint": "eslint --fix './**/*.{js,ts}'",
+    "lint:ci": "eslint --max-warnings 0 './**/*.{js,ts}'",
     "prepack": "tsdown",
     "release": "release-it",
     "test": "vitest"
@@ -44,6 +45,24 @@
     "url": "https://github.com/CyanSalt/vite-plugin-unused-code/issues"
   },
   "homepage": "https://github.com/CyanSalt/vite-plugin-unused-code#readme",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.15.0",
+      "onFail": "error"
+    },
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "^11.0.0",
+        "onFail": "error"
+      },
+      {
+        "name": "npm",
+        "onFail": "ignore"
+      }
+    ]
+  },
   "dependencies": {
     "fast-glob": "^3.3.2",
     "micromatch": "^4.0.8"

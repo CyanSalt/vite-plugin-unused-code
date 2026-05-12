@@ -1,0 +1,3 @@
+allowBuilds:
+  # Prepare binary or other required files
+  esbuild: true
