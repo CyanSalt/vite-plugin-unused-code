@@ -64,24 +64,24 @@
     ]
   },
   "dependencies": {
-    "fast-glob": "^3.3.2",
+    "fast-glob": "^3.3.3",
     "micromatch": "^4.0.8"
   },
   "devDependencies": {
-    "@cyansalt/eslint-config": "^4.3.0",
-    "@cyansalt/tsconfig": "^3.0.0",
-    "@release-it/conventional-changelog": "^9.0.4",
-    "@types/micromatch": "^4.0.9",
-    "@types/node": "^22.10.2",
-    "eslint": "^9.17.0",
-    "release-it": "^17.11.0",
-    "rolldown": "1.0.0-rc.10",
+    "@cyansalt/eslint-config": "^4.6.0",
+    "@cyansalt/tsconfig": "^3.0.2",
+    "@release-it/conventional-changelog": "^11.0.0",
+    "@types/micromatch": "^4.0.10",
+    "@types/node": "^24.12.3",
+    "eslint": "^10.3.0",
+    "release-it": "^20.0.1",
+    "rolldown": "1.0.0",
     "rolldown-vite": "^7.3.1",
-    "rollup": "^4.29.1",
-    "tsdown": "^0.16.7",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.6",
-    "vitest": "^3.0.8"
+    "rollup": "^4.60.3",
+    "tsdown": "^0.22.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.3",
+    "vitest": "^4.1.5"
   },
   "peerDependencies": {
     "vite": ">=2.0.0"
